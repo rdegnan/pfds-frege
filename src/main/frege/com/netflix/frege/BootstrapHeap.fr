@@ -1,0 +1,35 @@
+module com.netflix.frege.BootstrapHeap where
+
+import com.netflix.frege.Heap
+
+data BootstrapHeap h a = E | H a (h (BootstrapHeap h a))
+
+instance Eq Eq a => BootstrapHeap h a where
+  (H x _) == (H y _) = (x == y)
+  hashCode (H x _) = x.hashCode
+
+instance Ord Ord a => BootstrapHeap h a where
+  (H x _) <=> (H y _) = (x <=> y)
+
+instance Heap Heap h => BootstrapHeap h where
+  empty = E
+
+  null E = true
+  null _ = false
+
+  insert x h = merge (H x empty) h
+
+  merge E h = h
+  merge h E = h
+  merge (h1@H x p1) (h2@H y p2) =
+    if x <= y then H x (insert h2 p1) else H y (insert h1 p2)
+
+  findMin E = error "BootstrapHeap.findMin: empty heap"
+  findMin (H x p) = x
+
+  deleteMin E = error "BootstrapHeap.deleteMin: empty heap"
+  deleteMin (H x p) =
+    if null p then E
+    else let H y p1 = findMin p
+             p2 = deleteMin p
+         in H y (merge p1 p2)
