@@ -1,0 +1,8 @@
+module com.netflix.frege.Queue where
+
+import frege.Prelude hiding (head,tail)
+
+class Queue ListEmpty q => q where
+  snoc    :: q a -> a -> q a
+  head    :: q a -> a
+  tail    :: q a -> q a
