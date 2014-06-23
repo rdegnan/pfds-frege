@@ -1,0 +1,6 @@
+module com.netflix.frege.CatenableDeque where
+
+import frege.Prelude hiding (head,tail,last,init)
+import com.netflix.frege.Deque
+
+class CatenableDeque (Deque q, ListMonoid q) => q

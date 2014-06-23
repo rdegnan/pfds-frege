@@ -1,0 +1,31 @@
+module com.netflix.frege.CatList where
+
+import frege.Prelude hiding (head,tail)
+import com.netflix.frege.CatenableList
+import com.netflix.frege.Queue (Queue)
+
+data CatList q a = E | C a (q (CatList q a))
+
+link (C x q) s = C x (Queue.snoc q s)
+
+instance CatenableList Queue q => CatList q where
+  empty = E
+
+  null E = true
+  null _ = false
+
+  xs ++ E = xs
+  E ++ xs = xs
+  xs ++ ys = link xs ys
+
+  cons x xs = C x empty ++ xs
+  snoc xs x = xs ++ C x empty
+
+  head E = error "CatList.head: empty list"
+  head (C x q) = x
+
+  tail E = error "CatList.tail: empty list"
+  tail (C x q) = if null q then E else linkAll q
+    where linkAll q = if null q' then t else link t (linkAll q')
+            where t = Queue.head q
+                  q' = Queue.tail q

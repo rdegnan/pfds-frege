@@ -1,0 +1,12 @@
+module com.netflix.frege.Deque where
+
+import frege.Prelude hiding (head,tail,last,init)
+
+class Deque ListEmpty q => q where
+  cons    :: a -> q a -> q a
+  head    :: q a -> a
+  tail    :: q a -> q a
+
+  snoc    :: q a -> a -> q a
+  last    :: q a -> a
+  init    :: q a -> q a

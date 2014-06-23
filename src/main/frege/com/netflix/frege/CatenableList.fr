@@ -1,0 +1,10 @@
+module com.netflix.frege.CatenableList where
+
+import frege.Prelude hiding (head,tail)
+
+class CatenableList ListMonoid c => c where
+  cons    :: a -> c a -> c a
+  snoc    :: c a -> a -> c a
+
+  head    :: c a -> a
+  tail    :: c a -> c a
