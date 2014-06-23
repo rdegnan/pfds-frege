@@ -1,0 +1,7 @@
+module com.netflix.frege.Sortable where
+
+import frege.Prelude hiding (empty)
+
+class Sortable ListEmpty s => s where
+  add   :: Ord a => a -> s a -> s a
+  sort  :: Ord a => s a -> [a]

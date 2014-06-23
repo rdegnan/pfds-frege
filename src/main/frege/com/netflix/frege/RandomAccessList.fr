@@ -1,0 +1,11 @@
+module com.netflix.frege.RandomAccessList where
+
+import frege.Prelude hiding (head,tail)
+
+class RandomAccessList ListEmpty r => r where
+  cons    :: a -> r a -> r a
+  head    :: r a -> a
+  tail    :: r a -> r a
+
+  lookup  :: Int -> r a -> a
+  update  :: Int -> a -> r a -> r a

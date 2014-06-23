@@ -1,0 +1,5 @@
+module com.netflix.frege.Set where
+
+class Set ListEmpty s => s where
+  insert :: Ord a => a -> s a -> s a
+  member :: Ord a => a -> s a -> Bool

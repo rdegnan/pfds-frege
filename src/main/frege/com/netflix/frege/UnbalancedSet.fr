@@ -1,0 +1,23 @@
+module com.netflix.frege.UnbalancedSet where
+
+import com.netflix.frege.Set
+
+data UnbalancedSet a = E | T (UnbalancedSet a) a (UnbalancedSet a)
+
+instance Set UnbalancedSet where
+  empty = E
+
+  null E = true
+  null _ = false
+
+  member x E = false
+  member x (T a y b) =
+    if x < y then member x a
+    else if x > y then member x b
+    else true
+
+  insert x E = T E x E
+  insert x (s@T a y b) =
+    if x < y then T (insert x a) y b
+    else if x > y then T a y (insert x b)
+    else s
